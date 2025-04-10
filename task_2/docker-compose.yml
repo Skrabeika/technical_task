@@ -1,0 +1,28 @@
+services:
+  flask-service:
+    build: .
+    container_name: flask-service
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=redis
+    networks:
+      - games-network
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - games-network
+
+volumes:
+  redis_data:
+
+networks:
+  games-network:
+    name: games-network
+    driver: bridge
